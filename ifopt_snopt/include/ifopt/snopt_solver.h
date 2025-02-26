@@ -29,6 +29,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <ifopt/problem.h>
 #include <ifopt/solver.h>
+#include <string>
+#include <unordered_map>
 
 namespace ifopt {
 
