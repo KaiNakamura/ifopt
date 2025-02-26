@@ -46,6 +46,13 @@ class SnoptSolver : public Solver {
    * @param [in/out]  nlp  The specific problem to be used and modified.
    */
   void Solve(Problem& nlp) override;
+
+  void SetIntParameter(const char* stropt, int opt);
+  void SetRealParameter(const char* stropt, double opt);
+
+ protected:
+  std::unordered_map<std::string, int> intParameters;
+  std::unordered_map<std::string, double> realParameters;
 };
 
 } /* namespace ifopt */

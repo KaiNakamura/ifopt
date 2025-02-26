@@ -34,23 +34,17 @@ void SnoptSolver::Solve(Problem& ref)
   SnoptAdapter snopt(ref);
   snopt.Init();
 
+  // Load parameters from dictionaries and apply them
+  for (const auto& param : intParameters) {
+    snopt.setIntParameter(param.first.c_str(), param.second);
+  }
+  for (const auto& param : realParameters) {
+    snopt.setRealParameter(param.first.c_str(), param.second);
+  }
+
   // A complete list of options can be found in the snopt user guide:
   // https://web.stanford.edu/group/SOL/guides/sndoc7.pdf
   snopt.setProbName("snopt");
-  snopt.setIntParameter("Major Print level", 1);
-  snopt.setIntParameter("Minor Print level", 1);
-  snopt.setIntParameter("Derivative option",
-                        1);  // 1 = snopt will not calculate missing derivatives
-  snopt.setIntParameter("Verify level ",
-                        3);  // full check on gradients, will throw error
-  snopt.setIntParameter("Iterations limit", 200000);
-  snopt.setRealParameter("Major feasibility tolerance",
-                         1.0e-4);  // target nonlinear constraint violation
-  snopt.setRealParameter("Minor feasibility tolerance",
-                         1.0e-4);  // for satisfying the QP bounds
-  snopt.setRealParameter("Major optimality tolerance",
-                         1.0e-2);  // target complementarity gap
-
   // error codes as given in the manual.
   int Cold = 0;  // Basis = 1, Warm = 2;
 
@@ -76,6 +70,16 @@ void SnoptSolver::Solve(Problem& ref)
   }
 
   snopt.SetVariables();
+}
+
+void SnoptSolver::SetIntParameter(const char* stropt, int opt)
+{
+  intParameters[stropt] = opt;
+}
+
+void SnoptSolver::SetRealParameter(const char* stropt, double opt)
+{
+  realParameters[stropt] = opt;
 }
 
 } /* namespace ifopt */
